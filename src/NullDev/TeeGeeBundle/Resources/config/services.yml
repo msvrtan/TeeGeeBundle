@@ -1,4 +1,57 @@
 services:
-#    null_dev_tee_gee.example:
-#        class: NullDev\TeeGeeBundle\Example
-#        arguments: [@service_id, "plain_value", %parameter%]
+
+    teegee.parse.file:
+        class: NullDev\Examiner\FileParser\PhpFileParser
+        arguments:
+            factory: "@teegee.factory.fileParseResult"
+
+    teegee.loader.file:
+        class: NullDev\Examiner\PhpFileLoader
+
+    teegee.factory.classMetaData:
+        class: NullDev\TeeGee\ClassDomain\ClassMetaDataFactory
+
+    teegee.factory.settings:
+        class: NullDev\TeeGee\Core\SettingsFactory
+
+    teegee.factory.testMetaData:
+        class: NullDev\TeeGee\TestDomain\TestMetaDataFactory
+
+    teegee.factory.fileParseResult:
+        class: NullDev\Examiner\FileParser\PhpFileParseResultFactory
+
+    symfony.finder:
+        class: Symfony\Component\Finder\Finder
+
+    teegee.generator.classMetaData:
+        class: NullDev\TeeGee\ClassDomain\ClassMetaDataGenerator
+        arguments:
+            factory: "@teegee.factory.classMetaData"
+            parser: "@teegee.parse.file"
+            loader: "@teegee.loader.file"
+            reflectionGenerator: "@teegee.generator.reflection"
+
+    teegee.generator.reflection:
+        class: NullDev\Examiner\ReflectionClassGenerator
+
+    teegee.generator.settings:
+        class: NullDev\TeeGee\Core\SettingsGenerator
+        arguments:
+            settingsFactory: "@teegee.factory.settings"
+
+    teegee.generator.testMetaData:
+        class: NullDev\TeeGee\TestDomain\TestMetaDataGenerator
+        arguments:
+            factory: "@teegee.factory.testMetaData"
+            converterFactory: "@teegee.testMetaData.converter.factory"
+
+    teegee.testMetaData.converter.factory:
+        class: NullDev\TeeGee\TestDomain\Class2TestMetaDataConverterFactory
+
+    teegee.manager.class2test:
+        class: NullDev\TeeGee\Manager\Class2TestManager
+        arguments:
+            fileListGenerator: "@symfony.finder"
+            classMetaDataGenerator: "@teegee.generator.classMetaData"
+            settingsGenerator: "@teegee.generator.settings"
+            testMetaDataGenerator: "@teegee.generator.testMetaData"
