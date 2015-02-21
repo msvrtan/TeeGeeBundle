@@ -12,5 +12,3 @@ test:
     - ./vendor/bin/phpmd src/ text phpmd.xml
     - ./vendor/bin/phpcs --standard=phpcs.xml src/ -n
     - ./vendor/bin/coveralls
-
-  
