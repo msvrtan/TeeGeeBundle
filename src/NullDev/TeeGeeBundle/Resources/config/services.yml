@@ -1,0 +1,4 @@
+services:
+#    null_dev_tee_gee.example:
+#        class: NullDev\TeeGeeBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
