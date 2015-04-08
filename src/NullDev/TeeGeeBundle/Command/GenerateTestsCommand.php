@@ -34,6 +34,7 @@ class GenerateTestsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         echo 'Generating unit tests'.PHP_EOL;
+        require_once('tmp/nemesis/src/NullDev/Nemesis/Tests/Integration/ContainerTrait.php');
 
         $sourcePath = realpath($input->getArgument('sourcePath'));
 
